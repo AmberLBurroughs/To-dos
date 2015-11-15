@@ -1,6 +1,10 @@
 //user interaction doesn't provide desired results
 //add user interactivity to manage daily task
 
+var taskInput = document.getElementById("new-task");
+var addButton = document.getElementsByTagName("button")[0]; //first button
+var IncompleteTasksHolder = document.getElementById("incomplete-tasks"); // #incomplete-tasks
+var completedTasksHolder = document.getElementById("completed-tasks"); // #completed-tasks
 
 //add task
 var addTask = function{
