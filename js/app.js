@@ -1,16 +1,36 @@
 //user interaction doesn't provide desired results
 //add user interactivity to manage daily task
 
-var taskInput = document.getElementById("new-task"); // new task
-var addButton = document.getElementsByTagName("button")[0]; //first button ; ** add ID
-var incompleteTasksHolder = document.getElementById("incomplete-tasks"); // #incomplete-tasks
-var completeTasksHolder = document.getElementById("completed-tasks"); // #completed-tasks
+var pageLoad = function(){
+
+  //create nodes
+  var addButton = document.getElementById("addIt"); //first button
+  var incompleteTasksHolder = document.getElementById("incomplete-tasks"); // #incomplete-tasks
+  var completeTasksHolder = document.getElementById("completed-tasks"); // #completed-tasks
+
+  //create page load function
+  //set the click handler to the addTask function
+  addButton.addEventListener("click", addTask);
+  addButton.addEventListener("click", ajaxRequest);
+
+  //cycle over inCompleteTasksHolder ul li
+  for(var i = 0; i < incompleteTasksHolder.children.length; i++) {
+    //bind events to li's children
+    bindTaskEvents(incompleteTasksHolder.children[i], taskComplete);
+  }
+
+  //cycle over completeTasksHolder ul li
+  for(var i = 0; i < completeTasksHolder.children.length; i++) {
+      //bind events to li's children (taskIncomplete)
+      bindTaskEvents(completeTasksHolder.children[i], taskIncomplete);
+  }
+
+}
 
 //new task list item
 var creatNewTaskElement = function(taskString) {
   //Create List Item
   var listItem = document.createElement("li");
-
   //input (check box)
   var checkBox = document.createElement("input"); //checkbox
   //label
@@ -45,9 +65,10 @@ var creatNewTaskElement = function(taskString) {
 
 //add task
 var addTask = function() {
-  console.log("Add Task...");
+  var taskInput = document.getElementById("new-task"); // new task
+  var incompleteTasksHolder = document.getElementById("incomplete-tasks"); // #incomplete-tasks
   //create task- new li with input from #newTask:
-  var listItem = creatNewTaskElement("some new task");
+  var listItem = creatNewTaskElement(taskInput.value);
   //append listItem to incompleteTasksHolder
   incompleteTasksHolder.appendChild(listItem);
   bindTaskEvents(listItem, taskComplete);
@@ -57,7 +78,7 @@ var addTask = function() {
 
 //edit task
 var editTask = function() {
-  console.log("Edit task...");
+
   var listItem = this.parentNode;
 
   var editInput = listItem.querySelector("input[type=text");
@@ -83,7 +104,7 @@ var editTask = function() {
 
 //delete task
 var deleteTask = function() {
-  console.log("delete task...");
+
   var listItem = this.parentNode;
   var ul = listItem.parentNode;
 
@@ -93,25 +114,24 @@ var deleteTask = function() {
 
 //complete task
 var taskComplete = function() {
-  console.log("Task complete...");
   //when checkbox is checked
   //appened task li to #completed-tasks
   var listItem = this.parentNode;
+  var completeTasksHolder = document.getElementById("completed-tasks"); // #completed-tasks
   completeTasksHolder.appendChild(listItem);
   bindTaskEvents(listItem, taskIncomplete);
 }
 
 //mark as incomplete
 var taskIncomplete = function() {
-  console.log("Task incomplete...");
   //append to #incomplete-tasks
   var listItem = this.parentNode;
-  incompleteTasksHolder.appenedChild(listItem);
+  var incompleteTasksHolder = document.getElementById("incomplete-tasks"); // #incomplete-tasks
+  incompleteTasksHolder.appendChild(listItem);
   bindTaskEvents(listItem, taskComplete);
 }
 
 var bindTaskEvents = function(taskListItem, checkBoxEventHandler) {
-  console.log("Bind list item events...");
   //select taskListItem's children
   var checkBox = taskListItem.querySelector("input[type=checkbox]");
   var editButton = taskListItem.querySelector("button.edit");
@@ -129,26 +149,6 @@ var ajaxRequest = function() {
   console.log("AJAX request");
 }
 
-
-//set the click handler to the addTask function
-addButton.addEventListener("click", addTask);
-addButton.addEventListener("click", ajaxRequest);
-
-//cycle over inCompleteTasksHolder ul li
-for(var i = 0; i < incompleteTasksHolder.children.length; i++) {
-  //bind events to li's children
-  bindTaskEvents(incompleteTasksHolder.children[i], taskComplete);
-}
-
-//cycle over completeTasksHolder ul li
-for(var i = 0; i < completeTasksHolder.children.length; i++) {
-    //bind events to li's children (taskIncomplete)
-    bindTaskEvents(completeTasksHolder.children[i], taskIncomplete);
-}
-
-
-
-
-
-
-
+// run this on page load to bind these functions to
+// elements that are already on the page!
+pageLoad();
