@@ -127,3 +127,7 @@ ul li.editMode label {
 .edit:hover {
   color: #FBBC05;
 }
+.save:hover {
+  color: #34A853;
+}
+
